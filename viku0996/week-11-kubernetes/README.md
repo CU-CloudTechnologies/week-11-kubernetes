@@ -8,7 +8,7 @@ Below components are installed:
 3. minikube
 4. kubeadm
 
-Follow guide at (Kubernetes Docs)[https://kubernetes.io/docs/tasks/tools/install-kubectl/]
+Follow guide at [Kubernetes Docs](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 
 Start minikube
 ```
