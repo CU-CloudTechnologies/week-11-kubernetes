@@ -20,12 +20,12 @@ All of your work should go inside this directory.  Please include a README file 
 Push your changes to your Github as you go along, and when you're ready; create a Pull Request back to the Course Repo that you forked from.
 
 This repository contains the necessary files to deploy a Python web app (with redis database) on Kubernetes. It makes use of a single-node local cluster that can be spun up using minikube.
-The command to do that is "minikube start".
-Make sure your docker client points to the docker engine running on the minikube VM using the command "eval $(minikube docker-env)" .
+The command to do that is 'minikube start'.
+Make sure your docker client points to the docker engine running on the minikube VM using the command 'eval $(minikube docker-env)' .
 
-Now the samkishan/web2 docker image needs to be build. So, go to the ./Kube/Docker directory and all "docker build -d samkishan/web2 .". This should create the image and after completion you can check if the image has been created or not by using the command "docker images". 
+Now the samkishan/web2 docker image needs to be build. So, go to the ./Kube/Docker directory and all 'docker build -d samkishan/web2 .' . This should create the image and after completion you can check if the image has been created or not by using the command "docker images". 
 
-This newly created image has to be pushed to the local repository. This can be done using the command "docker push samkishan/web2". 
+This newly created image has to be pushed to the local repository. This can be done using the command 'docker push samkishan/web2'. 
 
 "cd" into the Kubernetes directory and then create the Kubernetes resources in the following order (using the following commands):
 1) "kubectl create -f db-pod.yml"
