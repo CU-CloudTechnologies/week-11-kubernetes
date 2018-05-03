@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-# week-11-k8s-files
+
 This repository is for submission of Week-11's Kubernetes assignment
 
 ## Instructions
@@ -19,7 +18,7 @@ Create a directory for YOUR submission, use your student ID just like you did on
 All of your work should go inside this directory.  Please include a README file with any special information that I'll need in order to run your assignment and access the web page.
 
 Push your changes to your Github as you go along, and when you're ready; create a Pull Request back to the Course Repo that you forked from.
-=======
+
 This repository contains the necessary files to deploy a Python web app (with redis database) on Kubernetes. It makes use of a single-node local cluster that can be spun up using minikube.
 The command to do that is "minikube start".
 Make sure your docker client points to the docker engine running on the minikube VM using the command "eval $(minikube docker-env)" .
@@ -57,4 +56,3 @@ Improvements for the future:
 
 
 -Sam Kishan
->>>>>>> First Commit
