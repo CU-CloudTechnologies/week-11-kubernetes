@@ -1,11 +1,10 @@
-# Week 9 Home Work
-This repository contains files needed replicate a simple version of our AWS Web Server Assignment, but instead of using two AWS Instances (Web Server and DB Server) we will use two containers.
-
+# Week 11 Home Work
+This repository contains files needed replicate a simple version of our AWS Web Server Assignment, but instead of using two AWS Instances (Web Server and DB Server) we will use two containers and k8s.
 
 ## Instructions
 
 This project uses kubernetes to to spin up docker containers.
-The docker containers first need to build locally and then pushed to google registery. Kubernetes will then pull the images from the registery and deploy accordingly.
+The docker containers first need to be built locally and then pushed to google registry. Kubernetes will then pull the images from the registry and deploy accordingly.
 1. Web Server - Apache + PHP
 2. Database Server - Mysql
 
@@ -25,6 +24,7 @@ The database server uses a volume in glcoud to store mysql files.
 
     docker build -t week-11-web -f DockerWeb .
     docker tag week-11-web us.gcr.io/cloud-tech-week-11/cloud-tech:v1
+    gcloud auth configure-docker
     docker push us.gcr.io/cloud-tech-week-11/cloud-tech:v1
 
 **Check if the correct tag images has been pushed:**
@@ -54,7 +54,7 @@ The database server uses a volume in glcoud to store mysql files.
 
     kubectl get pods
 
-![AMI ID](documentation/svc_example.png)
+![AMI ID](documentation/pods_example.png)
 
 **Service will give us the load balancer public IP:**
 
@@ -64,11 +64,13 @@ The database server uses a volume in glcoud to store mysql files.
 
 **Note the IP address**  
 
-#### Verify the deployment
+### Verify the deployment
 
 **Check the web service status:**
 
     http://{LoadBalancer_IP}/cloudtech.php
+
+![AMI ID](documentation/result1.png)
 
 **Check load balancing:**
 
