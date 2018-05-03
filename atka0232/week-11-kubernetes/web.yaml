@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+spec:
+  type: NodePort
+  ports:
+   - port: 80
+     targetPort: 80
+     protocol: TCP
+     name: http
+  selector:
+    app: web
+ # clusterIP: None
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: web
+spec:
+  selector:
+    matchLabels:
+      app: web
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - image: php:5.3-apache
+        name: web
+        ports:
+        - containerPort: 80
+          name: web
+        volumeMounts:
+        - name: web-mount
+          mountPath: /var/www/html
+          readOnly: True
+      volumes:
+      - name: web-mount
+        hostPath:
+         path: /mnt/data
+
+
