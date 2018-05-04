@@ -1,0 +1,41 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: mongodb
+spec:
+  selector:
+    app: mongod
+    tier: backend
+  ports:
+  - protocol: TCP
+    port: 27017
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: mongodb
+spec:
+  selector:
+    matchLabels:
+     app: mongod
+     tier: backend
+  template:
+    metadata:
+      labels:
+         app: mongod
+         tier: backend
+    spec:
+          containers:
+          - name: database-container
+            image: mongo
+            ports:
+            - containerPort: 27017
+            volumeMounts:
+            - name: vo1
+              mountPath: /data/db/
+          volumes:
+          - name: vo1
+            hostPath:
+                path: /root/Cloud-HW/mongodata/
