@@ -27,9 +27,9 @@ docker build -t nginx-php .
 ```
 3. Start kubernetes cluster
 ```
-kubernetes create -f deploy-secrets.yaml
-kubernetes create -f deploy-db.yaml
-kubernetes create -f deploy-web.yaml
+kubectl create -f deploy-secrets.yaml
+kubectl create -f deploy-db.yaml
+kubectl create -f deploy-web.yaml
 ```
 
 ## Verify the deployment
