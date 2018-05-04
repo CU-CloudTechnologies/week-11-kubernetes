@@ -34,7 +34,7 @@ minikube version
 minikube status
 ```
 
-##### Instructions:
+### Instructions:
 
 1. Run the below command for Kubernetes to locally build the images
 ```
@@ -54,7 +54,7 @@ kubernetes create -f node.yaml
 kubernetes create -f mongo.yaml
 ```
 
-##### Verification of the deployed pods
+### Verification of the deployed pods
 
 1. Run the following commands:
 
@@ -69,4 +69,12 @@ kubectl describe svc
 2. Run the command `minikube cluster-info` and check for the IP address (URL) of the master 
 
 3. To check for the message from the database container, run the command `curl http://<URL>:30001/coudtech_insert.php `
+
+
+### To Terminate the Pods
+
+```
+kubernetes delete -f node.yaml
+kubernetes delete -f mongo.yaml
+```
 
