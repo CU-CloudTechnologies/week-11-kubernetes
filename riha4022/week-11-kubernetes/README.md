@@ -68,7 +68,7 @@ kubectl describe svc
 
 2. Run the command `minikube cluster-info` and check for the IP address (URL) of the master 
 
-3. To check for the message from the database container, run the command `curl http://<URL>:30001/coudtech_insert.php `
+3. To check for the message from the database container, run the command `curl http://<URL>:30001/cloudtech.php `
 
 
 ### To Terminate the Pods
