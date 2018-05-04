@@ -13,7 +13,7 @@
 git clone https://github.com/rishabhhastu/week-11-kubernetes
 ```
 
-2. Change the directory to riha4022
+2. Change the directory to riha4022/week-11-kubernetes
 ```
 cd week-11-kubernetes/riha4022/week-11-kubernetes/
 ```
