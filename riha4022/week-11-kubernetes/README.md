@@ -10,12 +10,12 @@
 ### Pre-requisites
 1. Git Clone the repository into your local machine. 
 ```
-git clone https://github.com/rishabhhastu/week-11-compose-files
+git clone https://github.com/rishabhhastu/week-11-kubernetes
 ```
 
 2. Change the directory to riha4022
 ```
-cd week-9-compose-files/riha4022/
+cd week-11-kubernetes/riha4022/week-11-kubernetes/
 ```
 
 3. Install Minikube in your system. The below commands are for Linux OS. You can find the respective commands for your own flavor of OS
