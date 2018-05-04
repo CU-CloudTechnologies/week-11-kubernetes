@@ -27,10 +27,6 @@ curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s
 https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
 ```
 
-### USAGE:
-Run the following commands after doing the pre-requisites.
-```
-
 4. Start Minikube and verify the same 
 ```
 minikube start
