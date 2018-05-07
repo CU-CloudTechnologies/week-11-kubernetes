@@ -8,7 +8,7 @@ spec:
   type: NodePort
   ports:
     - port: 80
-      nodePort: 15043
+      nodePort: 31043
       protocol: TCP
   selector:
     app: app
