@@ -1,0 +1,56 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+ name: mysql
+ labels:
+  app: mysql
+spec:
+ template:
+  metadata:
+   labels:
+    app: mysql
+  spec:
+   containers:
+   - name: mysql
+     image: mysql
+     env:
+     - name: MYSQL_ROOT_PASSWORD
+       value: secret
+     - name: MYSQL_DATABASE
+       value: mydb
+     - name: MYSQL_USER
+       value: shikha
+     - name: MYSQL_PASSWORD
+       value: secret
+     ports:
+     - containerPort: 3306
+       name: mysql
+     volumeMounts:
+     - name: mysql-initdb
+       mountPath: /docker-entrypoint-initdb.d
+   volumes:
+   - name: mysql-initdb
+     configMap:
+      name: mysql-initdb-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+ name: mysql-initdb-config
+data:
+ initdb.sql: |
+  grant all privileges on *.* to 'shikha'@'%';
+  CREATE TABLE mydb.table1 (col1 varchar(255));
+  INSERT INTO mydb.table1 (col1) values ('Hello from DB Container');
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: mysql
+spec:
+ type: ClusterIP
+ ports:
+ - port: 3306
+   protocol: TCP
+ selector:
+   app: mysql
