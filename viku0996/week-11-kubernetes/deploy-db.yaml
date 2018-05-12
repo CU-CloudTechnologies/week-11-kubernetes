@@ -1,0 +1,103 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+data:
+  mydb.sql: |
+    DROP TABLE IF EXISTS mydb.teams;
+    CREATE TABLE mydb.teams(name varchar(20));
+    INSERT INTO mydb.teams VALUES ("CHELSEA FC"),("FC BARCELONA");
+    GRANT ALL PRIVILEGES on mydb.* TO 'master'@'%';
+kind: ConfigMap
+metadata:
+  name: mysql-configmap
+  labels:
+    app: webserver
+    tier: backend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  labels:
+    app: webserver
+    tier: backend
+spec:
+  selector:
+    matchLabels:
+      app: webserver
+      tier: backend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: webserver
+        tier: backend
+    spec:
+      containers:
+      - image: mysql
+        name: mysql
+        ports:
+        - containerPort: 3306
+          name: mysql
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-credentials
+                key: rootpw
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: mysql-credentials
+                key: user
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-credentials
+                key: password
+          - name: MYSQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: mysql-credentials
+                key: db
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+        - name: mysql-data
+          mountPath: /docker-entrypoint-initdb.d
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
+      - name: mysql-data
+        configMap:
+          name: mysql-configmap
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  labels:
+    app: webserver
+    tier: backend
+spec:
+  ports:
+  - port: 3306
+    protocol: TCP
+  selector:
+    app: webserver
+    tier: backend
+---
