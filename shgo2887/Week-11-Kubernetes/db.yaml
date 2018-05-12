@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - image: mysql:5.6
+            name: db
+      - env:
+        - name: MYSQL_DATABASE
+          value: database
+        - name: MYSQL_ROOT_PASSWORD
+          value: secret
+        
+        ports:
+        - containerPort: 3306
+            name: db
+        resources: {}
+        volumeMounts:
+        - mountPath: /docker-entrypoint-initdb.d
+          name: db-pv-claim
+      restartPolicy: Always
+      volumes:
+      - name: db-pv-claim
+        persistentVolumeClaim:
+          claimName: db-pv-claim
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+  selector:
+    app: db
+  clusterIP: None
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: db-pv-claim
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+status: {}
