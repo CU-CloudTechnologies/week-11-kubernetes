@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  labels:
+    app: webserver
+    tier: backend
+spec:
+  ports:
+  - port: 3306
+    protocol: TCP
+  selector:
+    app: webserver
+    tier: backend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  labels:
+    app: webserver
+    tier: backend
+spec:
+  selector:
+    matchLabels:
+      app: webserver
+      tier: backend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: webserver
+        tier: backend
+    spec:
+      containers:
+      - image: mysql
+        name: mysql
+        ports:
+        - containerPort: 3306
+          name: mysql
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: secret
+          - name: MYSQL_USER
+            value: admin
+          - name: MYSQL_PASSWORD
+            value: secret
+          - name: MYSQL_DATABASE
+            value: classes
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+        - name: mysql-data
+          mountPath: /docker-entrypoint-initdb.d
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
+      - name: mysql-data
+        configMap:
+          name: mysql-configmap
+---
+apiVersion: v1
+kind: ConfigMap
+data:
+  mydb.sql: |
+    DROP TABLE IF EXISTS classes;
+    CREATE TABLE classes(name varchar(30), class_code integer);
+    INSERT INTO classes VALUES ("Cloud Tech", 5301),("System Administration", 5240);
+    GRANT ALL PRIVILEGES on classes TO 'admin'@'%';
+metadata:
+  name: mysql-configmap
+  labels:
+    app: webserver
+    tier: backend
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
